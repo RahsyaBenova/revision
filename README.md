@@ -19,19 +19,10 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/RahsyaBenova/revision">
-    <img src="assets/img/Logo Rahsya Benova Akbar.png" alt="Logo" width="80" height="80">
-  </a>
 
 <h3 align="center">Kepegawaian</h3>
 
@@ -115,13 +106,6 @@ Buka Git Bash dan jalankan code dibawah ini
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-url]: https://github.com/RahsyaBenova/revision/graphs/contributors
-[forks-url]: https://github.com/RahsyaBenova/revision/network/members
-[stars-url]: https://github.com/RahsyaBenova/revision/stargazers
-[issues-url]: https://github.com/RahsyaBenova/revision/issues
-[license-url]: https://github.com/RahsyaBenova/revision/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/rahsyabenova
 [product-screenshot]: assets/img/dashboard.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
