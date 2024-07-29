@@ -88,8 +88,8 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
         <!-- /.content -->
       </div>
       <!-- /.content-wrapper -->
+      
       <?php include('layout/footer.php'); ?>
-    
       <!-- Control Sidebar -->
       <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->

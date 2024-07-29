@@ -5,7 +5,7 @@ class Page
 
     private static $instance = null;
 
-    private $db, $table, $total_records, $id, $limit = 5;
+    private $db, $table, $total_records, $id, $limit = 3;
 
     public function __construct($db_conn, $table)
     {
