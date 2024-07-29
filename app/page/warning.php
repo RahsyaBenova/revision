@@ -12,7 +12,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <h2>Hubungi operator atau superadmin</h2>
-                <img src="dist/img/404.png" class="container d-flex align-items-center justify-content-center" alt="">
+                <img src="../assets/dist/img/forbidden.jpg" class="container d-flex align-items-center justify-content-center" alt="">
               </div>
               <!-- /.card-body -->
             </div>

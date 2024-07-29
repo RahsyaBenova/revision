@@ -1,5 +1,6 @@
 <!-- Main content -->
 <?php 
+session_start();
 if($_SESSION['level'] =="common_user" ||$_SESSION['level'] =="operator" )  {
   echo "<h1>Akses Ditolak!</h1>";
   return false;

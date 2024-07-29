@@ -1,4 +1,11 @@
 <?php
+
+// Pemeriksaan level pengguna
+if ($_SESSION['level'] !== "superadmin") {
+    echo "<h1>Akses Ditolak!</h1>";
+    echo "<script>window.location.href = 'index.php?page=warning';</script>";
+    exit;
+}
 $pdo = Koneksi::connect();
 $crudUser = user::getInstance($pdo);
 
@@ -43,16 +50,14 @@ if (isset($id)) {
                             <div class="form-group col-md-12">
                                 <label>Level</label>
                                 <select class="form-control selectric" name="level" required>
-                                    <option value="admin" <?php echo ($level == 'admin') ? 'selected' : ''; ?>>Admin</option>
-                                    <option value="superAdmin" <?php echo ($level == 'superAdmin') ? 'selected' : ''; ?>>Super Admin</option>
+                                    <option value="superadmin" <?php echo ($level == 'superadmin') ? 'selected' : ''; ?>>SuperAdmin</option>
+                                    <option value="operator" <?php echo ($level == 'operator') ? 'selected' : ''; ?>>Operator</option>
+                                    <option value="common_user" <?php echo ($level == 'common_user') ? 'selected' : ''; ?>>Common user</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-lg btn-block" name="edit">Edit</button>
-                        </div>
-                        <div class="text-center">
-                            <a href="index.php?page=user&act=confirm-Password&id=<?= $id ?>">Change Password</a>
                         </div>
                     </div>
                 </form>

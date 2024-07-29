@@ -1,8 +1,20 @@
 <?php
-$pdo = Koneksi::connect();
-$crudUser = user::getInstance($pdo);
-$id_user = $_GET['id'];
+include "../../../database/class/user.php";
+include "../../../database/koneksi.php";
 
-if ($crudUser->delete($id_user) == true) {
-    echo "<script>window.location.href = 'index.php?page=user'</script>";
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+
+    $pdo = Koneksi::connect();
+    $user = User::getInstance($pdo);
+    $success = $user->hapusUser($id);
+
+    if ($success) {
+        header("Location: ../index.php?page=user&msg=2");
+    } else {
+        echo "Gagal menghapus user.";
+    }
+} else {
+    echo "ID user tidak ditemukan.";
 }
+?>

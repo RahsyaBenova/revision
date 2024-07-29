@@ -22,31 +22,6 @@ class user
     }
 
 
-    public function tambah($nama, $username, $password, $level)
-    {
-        try {
-
-            if ($this->cekUsername($username)) {
-                return false;
-            }
-
-            // enkripsi
-            $hashPasswd = password_hash($password, PASSWORD_DEFAULT);
-            //Masukkan users baru ke database
-            $stmt = $this->db->prepare("INSERT INTO users(id ,nama, password, alamat, not_tlp, level) VALUES(NULL,:nama, :username , :pass, :level)");
-            $stmt->bindParam(":nama", $nama);
-            $stmt->bindParam(":username", $username);
-            $stmt->bindParam(":pass", $hashPasswd);
-            $stmt->bindParam(":level", $level);
-            $stmt->execute();
-
-            return true;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            return false;
-        }
-    }
-
     public function getID($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
@@ -72,86 +47,20 @@ class user
             return false;
         }
     }
-
-    public function delete($id)
-    {
-        $stmt = $this->db->prepare("DELETE FROM users WHERE id =:id");
-        $stmt->bindParam(":id", $id);
-        $stmt->execute();
-        return true;
+    public function getAllUsers() {
+        $stmt = $this->db->query("SELECT * FROM users");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //pengecekan sebelum ganti passsoerd apakah password yang lama sesuai dengan milik users
-    public function confirmPassword($id, $oldPassword)
-    {
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
-            $stmt->bindParam(":id", $id);
-            $stmt->execute();
-            $data = $stmt->fetch();
-
-            if ($stmt->rowCount() == 1) {
-                if (password_verify($oldPassword, $data["password"])) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            // return true;
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+    public function tambahUser($nama, $username, $password, $level) {
+        $stmt = $this->db->prepare("INSERT INTO users (nama, username, password, level) VALUES (?, ?, ?, ?)");
+        return $stmt->execute([$nama, $username, password_hash($password, PASSWORD_BCRYPT), $level]);
     }
 
-    public function resetPassword($id, $password)
-    {
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
-            $stmt->bindParam(":id", $id);
-            $stmt->execute();
-            $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($data) {
-                $this->updatePassword($id, $password);
-                return true;
-            } else {
-                echo "Username Dan Email yang dimasukkan tidak sesuai";
-                return false;
-            }
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
+    public function hapusUser($id) {
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
+        return $stmt->execute([$id]);
     }
-
-    public function updatePassword($id, $password)
-    {
-        try {
-
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id");
-            $stmt->bindParam(":password", $hash);
-            $stmt->bindParam(":id", $id);
-            $stmt->execute();
-            return true;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-    }
-
-    // apakah username dan email sudah pernah digunakan
-    public function cekUsername($username)
-    {
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM users WHERE username = :username");
-            $stmt->bindParam(":username", $username);
-            $stmt->execute();
-            return $stmt->rowCount() > 0;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-    }
-
     public function getError()
     {
         return true;

@@ -1,108 +1,175 @@
-<!-- Main Content -->
+<?php
 
-<br>
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="d-inline">User List</h4>
-        </div>
-        
-        <form action="" method="post">
-            <div class="form-group">
-                <div class="row justify-content-center">
-                    <div class="col-md-4 mb-3">
-                        <input type="text" class="form-control" name="keyword" autocomplete="off" placeholder="Cari Nama Customer">
+if ($_SESSION['level'] == "common_user" || $_SESSION['level'] == "operator") {
+    echo "<h1>Akses Ditolak!</h1>";
+    return false;
+}
+
+
+
+$user = user::getInstance($pdo);
+$allUsers = $user->getAllUsers();
+?>
+
+<?php
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nama = htmlspecialchars($_POST['nama']);
+    $username = htmlspecialchars($_POST['username']);
+    $password = htmlspecialchars($_POST['password']);
+    $level = htmlspecialchars($_POST['level']);
+
+
+    $success = $user->tambahUser($nama, $username, $password, $level);
+
+    if ($success) {
+        echo   "<script>window.location.href = 'index.php?page=user&msg=1'</script>";
+    } else {
+        echo "Gagal menambahkan user.";
+    }
+}
+?>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Tabel User</h2>
                     </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary btn-block" type="submit" name="cari">
-                            <i class="fas fa-search"></i> Cari
+                    <div class="card-body">
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-lg">
+                            Tambah Data
                         </button>
+                        <br><br>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Username</th>
+                                    <th>Level/Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $no = 0;
+                                foreach ($allUsers as $user) {
+                                    $no++;
+                                    echo "<tr>
+                                        <td width='3%'>{$no}</td>
+                                        <td>{$user['nama']}</td>
+                                        <td>{$user['username']}</td>
+                                        <td>{$user['level']}</td>
+                                        <td>
+                                            <a href='index.php?page=user&act=edit&id={$user['id']}' class='btn btn-success btn-sm'>Edit</a>
+                                            <a onclick='hapus_data({$user['id']})' class='btn btn-danger btn-sm'>Hapus</a>
+                                        </td>
+                                    </tr>";
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Username</th>
+                                    <th>Level/Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
-        </form>
-        <div class="text-right">
-            <!-- Button trigger modal -->
-            <a href="index.php?page=user&act=create"><button type="button" class="btn btn-primary">
-                Tambah User
-            </button></a>
         </div>
-
     </div>
-    <div class="card-body">
-        <ul class="list list-styled-border">
-            <?php
-            $pdo = Koneksi::connect();
-            if (isset($_POST['cari'])) {
-                $key = htmlspecialchars($_POST['keyword']);
-            }
-            $paging = Page::getInstance($pdo, 'users');
-            $rows = $paging->getdata(@$key, 'nama');
-            $pages = $paging->getPageNumber();
-            foreach ($rows as $row) {
-            ?>
-                <li class="media mb-3">
-                    <div class="media-body">
-                        <h6 class="media-title">
-                            <span style="cursor:default" data-toggle="tooltip" title="Nama"> 
-                                <?php echo $row["nama"] ?> 
-                            </span>
-                        </h6>
-                        <div class="text-small text-muted">
-                            <span style="cursor:default" data-toggle="tooltip" title="Username">@<?php echo $row["username"] ?> </span>
-                            <div class="bullet"></div>
-                            <span style="cursor:default" data-toggle="tooltip" title="role" class="text-primary">
-                                <?php echo $row["level"] ?>
-                            </span>
+</section>
+<!-- /.content -->
+
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Tambahkan Data</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col">
+                            <label>Nama Lengkap</label>
+                        </div>
+                        <div class="col">
+                            <label>Username</label>
+                        </div>
+                        <div class="col">
+                            <label>Password</label>
                         </div>
                     </div>
-                    <div class="ml-3">
-                        <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip" title="Edit" href="index.php?page=user&act=edit&id=<?php echo $row["id"] ?>">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <a class="btn btn-danger btn-action tombol-hapus" data-toggle="tooltip" title="Delete" href='index.php?page=user&act=delete&id=<?php echo $row['id'] ?>'>
-                            <i class="fas fa-trash"></i>
-                        </a>
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Nama Lengkap" name="nama" required>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Username" name="username" required>
+                        </div>
+                        <div class="col">
+                            <input type="password" class="form-control" placeholder="Password" name="password" required>
+                        </div>
+                        <input type="text" hidden class="form-control" name="level" value="common_user">
                     </div>
-                </li>
-            <?php
-            }
-            ?>
-        </ul>
-    </div>
-    <div class="card-footer text-right">
-        <nav class="d-inline-block">
-            <ul class="pagination mb-0">
-                <li class="page-item">
-                    <a class="page-link" href="index.php?page=user&halaman=<?= $paging->prevPage() ?>" tabindex="-1">
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                </li>
-                <?php
-                for ($i = 1; $i <= $pages; $i++) :
-                    $halaman = isset($_GET['halaman']) ? $_GET['halaman'] : '';
-                    if ($halaman == $i) {
-                ?>
-                        <li class="page-item active">
-                            <a class="page-link active" href="index.php?page=user&halaman=<?= $i; ?>"><?= $i ?></a>
-                        </li>
-                    <?php
-                    } else {
-                    ?>
-                        <li class="page-item">
-                            <a class="page-link" href="index.php?page=user&halaman=<?= $i; ?>"><?= $i ?></a>
-                        </li>
-                <?php
-                    }
-                endfor;
-                ?>
-                <li class="page-item">
-                    <a class="page-link" href="index.php?page=user&halaman=<?= $paging->nextPage() ?>">
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-</div>
+
+<script>
+function hapus_data(data_id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: true
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Yakin Menghapus Data?',
+        text: "kamu tidak dapat memulihkannya kembali",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        confirmButtonColor: 'red',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+            window.location.href = ("page/user/hapus.php?id=" + data_id);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire(
+                'Dibatalkan',
+                'Data tetap ada',
+                'error'
+            )
+        }
+    })
+}
+
+
+</script>

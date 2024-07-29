@@ -54,11 +54,7 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
               if($_GET['page']== 'dashboard'){   
                   include ('page/dashboard/index.php');}
               else if($_GET['page']== 'data-pegawai'){ 
-                  include ('page/data_pegawai.php');}
-              else if($_GET['page']== 'data-pegawai'){ 
-                  include ('page/data_pegawai.php');}
-              else if($_GET['page']== 'edit-data'){ 
-                  include ('edit/edit_data.php');}
+                  include ('page/pegawai/default.php');}
               else if($_GET['page']== 'data-keuangan'){ 
                   include ('page/data_keuangan.php');}
               else if($_GET['page']== 'edit-data-keuangan'){ 
@@ -81,6 +77,8 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
                   include ('page/data_lokasi.php');}
               else if($_GET['page']== 'edit-data-jabatan'){ 
                   include ('edit/edit_data_jabatan.php');}
+              else if($_GET['page']== 'warning'){ 
+                  include ('page/warning.php');}
               else{
                     include('page/notfound.php');}}
               else{include ('page/dashboard/index.php');}

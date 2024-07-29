@@ -17,12 +17,6 @@ switch ($page) {
     case 'logout':
         include('userLogout.php');
         break;
-    case 'confirm-Password':
-        include('confirmPassword.php');
-        break;
-    case 'change-Password':
-        include('changePassword.php');
-        break;
     default:
         include('index.php');
 }

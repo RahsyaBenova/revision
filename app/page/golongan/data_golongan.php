@@ -1,8 +1,13 @@
 <!-- Main content -->
 <?php 
-if($_SESSION['level'] =="common_user")  {
-  echo "<h1>Akses Ditolak!</h1>";
-  return false;
+
+  session_start();
+
+// Pemeriksaan level pengguna
+if ($_SESSION['level'] !== "superadmin") {
+    echo "<h1>Akses Ditolak!</h1>";
+    echo "<script>window.location.href = 'index.php?page=warning';</script>";
+    exit;
 }
 ?>
     <section class="content">
