@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 // Inisialisasi PDO
 $pdo = Koneksi::connect();
 $pegawaiInstance = Pegawai::getInstance($pdo);
@@ -14,7 +13,44 @@ $view = $pegawaiInstance->getPegawaiById($id);
 $jabatanList = $pegawaiInstance->getAllJabatan();
 $golonganList = $pegawaiInstance->getAllGolongan();
 $lokasiList = $pegawaiInstance->getAllLokasi();
+
+// Mendapatkan data dari form jika form di-submit
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'];
+    $nama = $_POST['nama'];
+    $nip = $_POST['nip'];
+    $status = $_POST['status'];
+    $kode_jabatan = $_POST['jabatan'];
+    $kode_golongan = $_POST['kode_golongan'];
+    $kode_lokasi = $_POST['kode_lokasi'];
+    $jumlah_anak = $_POST['jumlah_anak'];
+
+    // Proses upload foto jika ada file yang diunggah
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+        $foto = $_FILES['foto']['name'];
+        $tmp_name = $_FILES['foto']['tmp_name'];
+        $upload_dir = '../assets/dist/img/foto/';
+        move_uploaded_file($tmp_name, $upload_dir . $foto);
+    } else {
+        // Jika tidak ada file foto baru yang diunggah, gunakan foto lama
+        $pegawai = $pegawaiInstance->getPegawaiById($id);
+        $foto = $pegawai['foto'];
+    }
+
+    // Update data pegawai
+    $updated = $pegawaiInstance->updatePegawai($id, $nama, $nip, $status, $kode_jabatan, $kode_golongan, $kode_lokasi, $jumlah_anak, $foto);
+
+    if ($updated) {
+        // Redirect ke halaman pegawai jika berhasil diupdate
+        echo "<script>window.location.href = 'index.php?page=data-pegawai'</script>";
+        exit();
+    } else {
+        // Tampilkan pesan error jika gagal
+        echo "Terjadi kesalahan saat mengupdate data.";
+    }
+}
 ?>
+
 <section class="content">
     <div class="container-fluid">
         <div class="card card-warning">
@@ -22,7 +58,7 @@ $lokasiList = $pegawaiInstance->getAllLokasi();
                 <h3 class="card-title">Edit Data Pegawai</h3>
             </div>
             <div class="card-body">
-                <form method="post" action='update/update_data.php' enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -107,16 +143,6 @@ $lokasiList = $pegawaiInstance->getAllLokasi();
         </div>
     </div>
     <script>
-        // Auto set file input
-        const fileInput = document.querySelector('input[type="file"]');
-        const myFile = new File(['test'], '<?= $view['foto']; ?>', {
-            type: 'text/plain',
-            lastModified: new Date(),
-        });
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(myFile);
-        fileInput.files = dataTransfer.files;
-
         function autoAnak(){
             var status = document.getElementById('status').value;
             var jumlahAnak = document.getElementById('jumlahanak');

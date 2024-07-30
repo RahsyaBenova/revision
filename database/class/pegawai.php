@@ -12,7 +12,7 @@ class Pegawai
         return self::$instance;
     }
 
-    public function __construct($pdo)
+    private function __construct($pdo)
     {
         $this->db = $pdo;
     }
@@ -110,6 +110,25 @@ class Pegawai
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
-}
 
+    public function getGajiPegawai()
+    {
+        $query = "SELECT tb_pegawai.nip, tb_pegawai.nama, jabatan.nama_jabatan, tb_golongan.nama_golongan, tb_pegawai.status, tb_pegawai.jumlah_anak, jabatan.gapok, jabatan.tunjangan_jabatan,
+                         IF(tb_pegawai.status='menikah', tunjangan_si, 0) AS tjsi,
+                         IF(tb_pegawai.status='menikah', tunjangan_anak*jumlah_anak, 0) AS tjanak,
+                         uang_makan AS uangmakan,
+                         askes,
+                         (gapok + tunjangan_jabatan + 
+                          IF(tb_pegawai.status='menikah', tunjangan_si, 0) +
+                          IF(tb_pegawai.status='menikah', tunjangan_anak * jumlah_anak, 0) +
+                          uang_makan + askes) AS totalgaji
+                  FROM tb_pegawai
+                  INNER JOIN tb_golongan ON tb_golongan.kode_golongan = tb_pegawai.kode_golongan
+                  INNER JOIN jabatan ON jabatan.kode_jabatan = tb_pegawai.kode_jabatan
+                  ORDER BY tb_pegawai.nama ASC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
 ?>

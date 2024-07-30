@@ -42,7 +42,7 @@
               </li>
           </li>
           <li class="nav-item">
-            <a href="auth/logout.php" class="nav-link text-red font-weight-bold">
+            <a href="index.php?page=user&act=logout" class="nav-link text-red font-weight-bold">
               <i class="nav-icon fas  fa-power-off"></i>
               <p>
                 Log Out

@@ -56,7 +56,7 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
               else if($_GET['page']== 'data-pegawai'){ 
                   include ('page/pegawai/default.php');}
               else if($_GET['page']== 'data-keuangan'){ 
-                  include ('page/data_keuangan.php');}
+                  include ('page/keuangan/default.php');}
               else if($_GET['page']== 'edit-data-keuangan'){ 
                   include ('edit/edit_data_keuangan.php');}
               else if($_GET['page']== 'informasi'){ 
@@ -66,15 +66,15 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
               else if($_GET['page']== 'edit-user'){ 
                   include ('edit/edit_data_user.php');}
               else if($_GET['page']== 'data-penggajian'){ 
-                  include ('page/penggajian.php');}
+                  include ('page/penggajian/index.php');}
               else if($_GET['page']== 'invoice-gaji'){ 
                   include ('report/cetak_invoice.php');}
               else if($_GET['page']== 'data-jabatan'){ 
-                  include ('page/data_jabatan.php');}
+                  include ('page/jabatan/default.php');}
               else if($_GET['page']== 'data-golongan'){ 
-                  include ('page/data_golongan.php');}
+                  include ('page/golongan/default.php');}
               else if($_GET['page']== 'data-lokasi'){ 
-                  include ('page/data_lokasi.php');}
+                  include ('page/lokasi/default.php');}
               else if($_GET['page']== 'edit-data-jabatan'){ 
                   include ('edit/edit_data_jabatan.php');}
               else if($_GET['page']== 'warning'){ 

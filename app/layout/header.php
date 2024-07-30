@@ -33,7 +33,7 @@
   <link   href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
   rel="stylesheet"  type='text/css'>
    <!-- icon web -->
-   <link rel="shortcut icon" href="../../assets/dist/img/Logo Rahsya Benova Akbar.png" type="image/png">
+   <link rel="shortcut icon" href="../assets/dist/img/Logo Rahsya Benova Akbar.png" type="image/png">
    <!-- ChartJS -->
 <script src="../assets/plugins/chart.js/Chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
