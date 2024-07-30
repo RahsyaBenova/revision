@@ -215,7 +215,7 @@ swalWithBootstrapButtons.fire({
       'success',
       
     )
-    window.location=("page/golongan/hapus.php?id="+kode_golongan);
+    window.location=("index.php?page=data-golongan&&act=delete&&id="+kode_golongan);
   } else if (
     /* Read more about handling dismissals below */
     result.dismiss === Swal.DismissReason.cancel
