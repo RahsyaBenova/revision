@@ -231,7 +231,7 @@ function hapus_data(data_id) {
                 'Your file has been deleted.',
                 'success'
             )
-            window.location.href = ("page/pegawai/hapus.php?id=" + data_id);
+            window.location.href = ("index.php?page=data-pegawai&&act=delete&&id=" + data_id);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire(
                 'Dibatalkan',

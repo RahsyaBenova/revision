@@ -1,15 +1,13 @@
 <?php
 
-include ('../../../database/koneksi.php');
-include ('../../../database/class/pegawai.php');
 
 $id = $_GET['id'];
 
 $pegawai = Pegawai::getInstance(Koneksi::connect());
 
 if ($pegawai->hapusPegawai($id)) {
-    header('Location: ../index.php?page=data-pegawai');
+    echo "<script>window.location.href = 'index.php?page=data-pegawai'</script>";
 } else {
-    echo "Error deleting record.";
+    echo "<script>window.location.href = 'index.php?page=data-pegawai'</script>";
 }
 ?>
