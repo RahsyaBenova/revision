@@ -52,5 +52,33 @@ class Keuangan
             echo "Error: " . $e->getMessage();
         }
     }
+
+    public function getKeuanganById($id)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM tb_keuangan WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function updateKeuangan($id, $tanggal, $keterangan, $pemasukan, $pengeluaran)
+    {
+        try {
+            $stmt = $this->db->prepare("UPDATE tb_keuangan SET tanggal = :tanggal, keterangan = :keterangan, pemasukan = :pemasukan, pengeluaran = :pengeluaran WHERE id = :id");
+            $stmt->bindParam(':tanggal', $tanggal);
+            $stmt->bindParam(':keterangan', $keterangan);
+            $stmt->bindParam(':pemasukan', $pemasukan);
+            $stmt->bindParam(':pengeluaran', $pengeluaran);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
 }
 ?>

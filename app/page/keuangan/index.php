@@ -92,7 +92,7 @@ $date = date('Y-m-d');
                                     <td><?= "Rp " . $uang['pengeluaran']; ?></td>
                                     <?php if ($_SESSION['level'] === "superadmin"): ?>
                                         <td>
-                                            <a href="index.php?page=edit-data-keuangan&id=<?= $uang['id']; ?>" class="btn btn-success btn-sm">Edit</a>
+                                            <a href="index.php?page=data-keuangan&&act=edit&&id=<?=$uang['id'];?>" class="btn btn-success btn-sm">Edit</a>
                                             <a onclick="hapus_data(<?= $uang['id']; ?>)" class="btn btn-danger btn-sm">Hapus</a>
                                         </td>
                                     <?php endif; ?>
@@ -202,7 +202,7 @@ $date = date('Y-m-d');
                     'Your file has been deleted.',
                     'success',
                 )
-                window.location.href = ("page/keuangan/hapus.php?id=" + data_id);
+                window.location.href = ("index.php?page=data-keuangan&&act=delete&&id=" + data_id);
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithBootstrapButtons.fire(
                     'Dibatalkan',
