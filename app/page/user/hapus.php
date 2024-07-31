@@ -1,20 +1,12 @@
 <?php
-include "../../../database/class/user.php";
-include "../../../database/koneksi.php";
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+$id = $_GET['id'];
 
-    $pdo = Koneksi::connect();
-    $user = User::getInstance($pdo);
-    $success = $user->hapusUser($id);
+$user = user::getInstance(Koneksi::connect());
 
-    if ($success) {
-        header("Location: ../index.php?page=user&msg=2");
-    } else {
-        echo "Gagal menghapus user.";
-    }
+if ($user->hapusUser($id)) {
+    echo "<script>window.location.href = 'index.php?page=user'</script>";
 } else {
-    echo "ID user tidak ditemukan.";
+    echo "<script>window.location.href = 'index.php?page=user'</script>";
 }
 ?>
