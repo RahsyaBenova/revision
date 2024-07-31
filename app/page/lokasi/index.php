@@ -13,9 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $lokasi->create($kode_lokasi, $nama_lokasi);
 
     if ($result) {
-        echo "Data berhasil ditambahkan!";
+        
     } else {
-        echo "Data gagal ditambahkan!";
     }
 }
 ?>
@@ -142,7 +141,7 @@ function hapus_data(kode_lokasi) {
                 'Your file has been deleted.',
                 'success'
             );
-            window.location = ("page/lokasi/hapus.php?id=" + kode_lokasi);
+            window.location.href = ("index.php?page=data-lokasi&&act=delete&&id=" + kode_lokasi);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire(
                 'Dibatalkan',

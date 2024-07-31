@@ -1,15 +1,13 @@
 <?php
 
-include ('../../../database/koneksi.php');
-include ('../../../database/class/lokasi.php');
 
 $id = $_GET['id'];
 $jabatanInstance = Lokasi::getInstance();
 $success = $jabatanInstance->delete($id);
 
 if ($success) {
-    header('Location: ../index.php?page=data-lokasi&msg=1');
+    echo "<script>window.location.href = 'index.php?page=data-lokasi';</script>";
 } else {
-    echo "Gagal menghapus data jabatan.";
+    echo "<script>window.location.href = 'index.php?page=data-lokasi';</script>";
 }
 ?>
