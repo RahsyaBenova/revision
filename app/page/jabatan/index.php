@@ -172,7 +172,7 @@ if($_SESSION['level'] == "common_user") {
           'success'
         )
         // window.location = ("delete/hapus_data_jabatan.php?id=" + kode_jabatan);
-        window.location.href = ("page/jabatan/hapus.php?id=" + kode_jabatan);
+        window.location.href = ("index.php?page=data-jabatan&&act=delete&&id=" + kode_jabatan);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         swalWithBootstrapButtons.fire(
           'Dibatalkan',

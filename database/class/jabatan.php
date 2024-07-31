@@ -16,10 +16,10 @@ class Jabatan
         }
         return self::$instance;
     }
+
     public function getAllJabatan()
     {
-        $query = "SELECT * FROM jabatan ORDER BY kode_jabatan ASC";
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare("SELECT * FROM jabatan ORDER BY kode_jabatan ASC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
