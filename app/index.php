@@ -23,6 +23,15 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
     }
 
 } else {
+
+    $cetak = isset($_GET['cetak']) ? $_GET['cetak'] : 'cetak';
+    switch ($cetak) {
+        case 'keuangan':
+            include 'page/report/pdf-keuangan.php';
+        case 'penggajian':
+            include 'page/report/cetak_penggajian.php';
+    }
+
     include 'layout/header.php'; ?>
     <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">

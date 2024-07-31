@@ -29,7 +29,7 @@ include_once '../database/class/penggajian.php';
                   Cetak
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="page/report/cetak_penggajian.php" target="_blank">Data Keuangan</a>
+                  <a class="dropdown-item" href="index.php?cetak=penggajian" target="_blank">Data Keuangan</a>
                 </div>
               </div>
                 <br><br>

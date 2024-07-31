@@ -1,12 +1,10 @@
 <?php
-session_start();
 if(!isset($_SESSION['nama'])){
   header('location: ../index.php?session=expired');
   exit;
 }
 
-require_once '../../../database/koneksi.php';
-require_once '../../../database/class/keuangan.php';
+require_once '../database/class/keuangan.php';
 
 use Mpdf\Mpdf;
 
