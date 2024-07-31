@@ -60,7 +60,7 @@ $date = date('Y-m-d');
                                 Cetak
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="page/report/pdf-keuangan.php" target="_blank">Tabel Data Keuangan</a>
+                                <a class="dropdown-item" href="index.php?cetak=keuangan" target="_blank">Tabel Data Keuangan</a>
                                 <a class="dropdown-item" onclick="downloadPDF()" target="_blank">Grafik Data Keuangan</a>
                             </div>
                         </div>
