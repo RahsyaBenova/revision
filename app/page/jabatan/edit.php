@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jabatanInstance = Jabatan::getInstance();
     $jabatanInstance->updateJabatan($kode_jabatan, $nama_jabatan, $gapok, $tunjangan_jabatan);
 
-    echo "<script>window.location.href = 'index.php?page=data-jabatan'</script>";
+    echo "<script>window.location.href = 'index.php?page=data-jabatan&&msg=2'</script>";
 }
 ?>
 
