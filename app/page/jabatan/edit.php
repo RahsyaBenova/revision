@@ -1,6 +1,5 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
     $kode_jabatan = $_POST['kode_jabatan'];
     $nama_jabatan = $_POST['nama_jabatan'];
     $gapok = $_POST['gapok'];
