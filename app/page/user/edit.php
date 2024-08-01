@@ -16,7 +16,7 @@ if (isset($_POST["edit"])) {
     $username = htmlspecialchars($_POST["username"]);
     $level = $_POST["level"];
     if ($crudUser->update($id, $nama, $username, $level)) {
-        echo "<script>window.location.href = 'index.php?page=user'</script>";
+        echo "<script>window.location.href = 'index.php?page=user&&msg=2'</script>";
     }
 }
 
