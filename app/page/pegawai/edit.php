@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($updated) {
         // Redirect ke halaman pegawai jika berhasil diupdate
-        echo "<script>window.location.href = 'index.php?page=data-pegawai'</script>";
+        echo "<script>window.location.href = 'index.php?page=data-pegawai&&msg=2'</script>";
         exit();
     } else {
         // Tampilkan pesan error jika gagal
