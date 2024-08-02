@@ -5,6 +5,11 @@ $allUsers = $user->getAllUsers();
 ?>
 
 <?php
+if ($_SESSION['level'] == "common_user" || $_SESSION['level'] == "operator") {
+    echo "<script>window.location.href = 'index.php?page=warning';</script>";
+    return false;
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama = htmlspecialchars($_POST['nama']);
