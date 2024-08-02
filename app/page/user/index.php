@@ -1,12 +1,5 @@
 <?php
 
-if ($_SESSION['level'] == "common_user" || $_SESSION['level'] == "operator") {
-    echo "<h1>Akses Ditolak!</h1>";
-    return false;
-}
-
-
-
 $user = user::getInstance($pdo);
 $allUsers = $user->getAllUsers();
 ?>
