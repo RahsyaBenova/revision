@@ -1,7 +1,6 @@
 <?php
 include "../database/class/user.php";
 include "../database/class/page.php";
-session_start();
 
 $page = isset($_GET["act"]) ? $_GET["act"] : '';
 switch ($page) {

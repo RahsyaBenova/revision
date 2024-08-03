@@ -29,6 +29,20 @@ if (isset($_POST["login"])) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RaR | Log in</title>
+  <style>
+    .login-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .forgot-password-link {
+      text-align: right;
+      color: cyan;
+    }
+    .forgot-password-link a {
+      color: cyan;
+    }
+  </style>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -73,30 +87,23 @@ if (isset($_POST["login"])) {
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-8">
-            <!-- <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div> -->
-          <!-- /.col -->
+        <div class="row login-options">
           <div class="col-5">
             <button type="submit" class="btn btn-primary btn-block" name="login">Log In</button>
           </div>
-          <br>
-          <!-- /.col -->
+          <div class="col-7 forgot-password-link">
+            <p><a href="index.php?auth=forget">Forgot Password?</a></p>
+          </div>
+        </div>
         </div>
         
+        <center>
+          <div class="text-center" style="color:white; margin right:-2px;">
+            <p color="white">Belum Punya Akun?<a href="index.php?auth=register" style="color:cyan;"> Register</a></p>
+           
+            
+          </center>
       </div>
-      <center>
-        <div class="text-center" style="color:white; margin right:-2px;">
-          <p color="white">Belum Punya Akun?<a href="index.php?auth=register" style="color:cyan;"> Register</a></p>
-         
-          
-        </center>
       </form>
 
       <!-- <div class="social-auth-links text-center mt-2 mb-3">
@@ -174,6 +181,48 @@ if (isset ($_GET['error'])){
     Toast.fire({
       icon: 'success',
       title: 'Registrasi Berhasil.'
+    })
+    </script>";
+  }else if ($x==4) {
+    echo "
+    <script>
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    Toast.fire({
+      icon: 'success',
+      title: 'Email telah dikirim. Cek Kotak Pesan Anda.'
+    })
+    </script>";
+  }else if ($x==5) {
+    echo "
+    <script>
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    Toast.fire({
+      icon: 'success',
+      title: 'Password Berhasil Diubah. Silahkan Login Kembali.'
+    })
+    </script>";
+  }else if ($x==6) {
+    echo "
+    <script>
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    Toast.fire({
+      icon: 'error',
+      title: 'Link Tidak Valid/Kadaluarsa. Silahkan Request Kembali/Hubungi Superadmin.'
     })
     </script>";
   }

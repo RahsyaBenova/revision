@@ -15,7 +15,10 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
             include 'auth/register.php';
             break;
         case 'forget':
-            include 'auth/forgotPassword.php';
+            include 'auth/forget.php';
+            break;
+        case 'reset':
+            include 'auth/reset.php';
             break;
         default:
             include 'auth/login.php';

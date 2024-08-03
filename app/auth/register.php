@@ -3,22 +3,28 @@
 $pdo = Koneksi::connect();
 $user = Auth::getInstance($pdo);
 
-
 if ($user->isLoggedIn()) {
     header("Location: ../app/index.php");
+    exit;
 }
 
 if (isset($_POST["register"])) {
     $nama = htmlspecialchars($_POST["nama"]);
+    $email = htmlspecialchars($_POST["email"]);
     $username = htmlspecialchars($_POST["username"]);
     $password = htmlspecialchars($_POST["password"]);
+    $password2 = htmlspecialchars($_POST["password2"]);
     $level = $_POST["level"];
 
-    if ($user->register($nama, $username, $password, $level)) {
-        $success = true;
-        header("Location: ../index.php");
+    if ($password !== $password2) {
+        $error = "Passwords must match";
     } else {
-        $error = $user->getError();
+        if ($user->register($nama, $email, $username, $password, $level)) {
+            header("Location: index.php?error=3");
+            exit;
+        } else {
+            $error = $user->getError();
+        }
     }
 }
 
@@ -44,17 +50,19 @@ if (isset($_POST["register"])) {
 </head>
 <body class="hold-transition register-page" style="background-image: url('../assets/dist/img/background.jpg')">
 <div class="register-box">
-  <div class="card card-outline card-primary" style="background:transparent; backdrop-filter:blur(20px) brightness(200%); border:1px solid white;
-  border-radius:20px;">
+  <div class="card card-outline card-primary" style="background:transparent; backdrop-filter:blur(20px) brightness(200%); border:1px solid white; border-radius:20px;">
     <div class="card-header text-center">
       <a href="" class="h1" style="color:white;"><b>RaR</b>Corp</a>
     </div>
     <hr color="white">
     <div class="card-body">
-    <p class="login-box-msg" style="color:white; margin-top:-10px;">Buat akun untuk melanjutkan</p>
-      <form  method="post">
+      <p class="login-box-msg" style="color:white; margin-top:-10px;">Buat akun untuk melanjutkan</p>
+      <?php if (isset($error)): ?>
+        <div class="alert alert-danger"><?php echo $error; ?></div>
+      <?php endif; ?>
+      <form method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Nama Lengkap" name="nama">
+          <input type="text" class="form-control" placeholder="Nama Lengkap" name="nama" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-id-card"></span>
@@ -62,7 +70,15 @@ if (isset($_POST["register"])) {
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="username" name="username">
+          <input type="email" class="form-control" placeholder="Email" name="email" required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Username" name="username" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -70,7 +86,7 @@ if (isset($_POST["register"])) {
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password">
+          <input type="password" class="form-control" placeholder="Password" name="password" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -78,36 +94,32 @@ if (isset($_POST["register"])) {
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Retype password" name="password2">
+          <input type="password" class="form-control" placeholder="Retype password" name="password2" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>
-        <input type="text" class="form-control" name="level"  value="common_user" hidden>
+        <input type="text" class="form-control" name="level" value="common_user" hidden>
         
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+              <input type="checkbox" id="agreeTerms" name="terms" value="agree" required>
               <label for="agreeTerms" style="color:white;">
                I agree to the <a href="terms">terms</a>
               </label>
             </div>
           </div>
-          <!-- /.col -->
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block" name="register">Register</button>
           </div>
-          <!-- /.col -->
         </div>
       </form>
     </div>
-    <!-- /.form-box -->
-  </div><!-- /.card -->
+  </div>
 </div>
-<!-- /.register-box -->
 
 <!-- jQuery -->
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
