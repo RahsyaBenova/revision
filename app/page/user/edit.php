@@ -14,8 +14,9 @@ $id = $_GET['id'];
 if (isset($_POST["edit"])) {
     $nama = htmlspecialchars($_POST["nama"]);
     $username = htmlspecialchars($_POST["username"]);
+    $email = htmlspecialchars($_POST["email"]);
     $level = $_POST["level"];
-    if ($crudUser->update($id, $nama, $username, $level)) {
+    if ($crudUser->update($id, $nama, $username, $email, $level)) {
         echo "<script>window.location.href = 'index.php?page=user&&msg=2'</script>";
     }
 }
@@ -48,6 +49,12 @@ if (isset($id)) {
                         </div>
                         <div class="row">
                             <div class="form-group col-md-12">
+                                <label for="email">Email</label>
+                                <input id="email" type="text" class="form-control" name="email" value="<?php echo $email; ?>" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
                                 <label>Level</label>
                                 <select class="form-control selectric" name="level" required>
                                     <option value="superadmin" <?php echo ($level == 'superadmin') ? 'selected' : ''; ?>>SuperAdmin</option>
@@ -57,7 +64,7 @@ if (isset($id)) {
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-lg btn-block" name="edit">Edit</button>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" name="edit">UPDATE</button>
                         </div>
                     </div>
                 </form>

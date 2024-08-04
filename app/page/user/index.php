@@ -14,11 +14,12 @@ if ($_SESSION['level'] == "common_user" || $_SESSION['level'] == "operator") {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama = htmlspecialchars($_POST['nama']);
     $username = htmlspecialchars($_POST['username']);
+    $email = htmlspecialchars($_POST['email']);
     $password = htmlspecialchars($_POST['password']);
     $level = htmlspecialchars($_POST['level']);
 
 
-    $success = $user->tambahUser($nama, $username, $password, $level);
+    $success = $user->tambahUser($nama, $username, $email, $password, $level);
 
     if ($success) {
         echo   "<script>window.location.href = 'index.php?page=user&msg=1'</script>";
@@ -107,6 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label>Username</label>
                         </div>
                         <div class="col">
+                            <label>Email</label>
+                        </div>
+                        <div class="col">
                             <label>Password</label>
                         </div>
                     </div>
@@ -116,6 +120,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" placeholder="Username" name="username" required>
+                        </div>
+                        <div class="col">
+                            <input type="email" class="form-control" placeholder="Email" name="email" required>
                         </div>
                         <div class="col">
                             <input type="password" class="form-control" placeholder="Password" name="password" required>

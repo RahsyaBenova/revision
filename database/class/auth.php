@@ -214,7 +214,7 @@ class Auth
         if ($stmt->rowCount()) {
             // Send email
             $mail = require __DIR__ . "/mailer.php";
-            $mail->setFrom("***************");
+            $mail->setFrom("***********");
             $mail->addAddress($email);
             $mail->Subject = "Password Reset";
             $mail->Body = <<<END

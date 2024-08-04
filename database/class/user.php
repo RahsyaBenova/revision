@@ -31,14 +31,15 @@ class user
     }
 
 
-    public function update($id, $nama, $username, $level)
+    public function update($id, $nama, $username,$email, $level)
     {
         try {
 
-            $stmt = $this->db->prepare("UPDATE users SET nama = :nama, username = :username, level = :level WHERE id =:id ");
+            $stmt = $this->db->prepare("UPDATE users SET nama = :nama, username = :username, email = :email, level = :level WHERE id =:id ");
             $stmt->bindParam(":id", $id);
             $stmt->bindParam(":nama", $nama);
             $stmt->bindParam(":username", $username);
+            $stmt->bindParam(":email", $email);
             $stmt->bindParam(":level", $level);
             $stmt->execute();
             return true;
@@ -52,9 +53,9 @@ class user
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function tambahUser($nama, $username, $password, $level) {
-        $stmt = $this->db->prepare("INSERT INTO users (nama, username, password, level) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$nama, $username, password_hash($password, PASSWORD_BCRYPT), $level]);
+    public function tambahUser($nama, $username, $email, $password, $level) {
+        $stmt = $this->db->prepare("INSERT INTO users (nama, username, email, password, level) VALUES (?, ?, ?, ?, ?)");
+        return $stmt->execute([$nama, $username, $email, password_hash($password, PASSWORD_BCRYPT), $level]);
     }
 
     public function hapusUser($id) {
