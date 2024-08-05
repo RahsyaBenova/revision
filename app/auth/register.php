@@ -14,12 +14,13 @@ if (isset($_POST["register"])) {
     $username = htmlspecialchars($_POST["username"]);
     $password = htmlspecialchars($_POST["password"]);
     $password2 = htmlspecialchars($_POST["password2"]);
-    $level = $_POST["level"];
+    $level = htmlspecialchars($_POST["level"]);
 
     if ($password !== $password2) {
         $error = "Passwords must match";
     } else {
-        if ($user->register($nama, $email, $username, $password, $level)) {
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        if ($user->register($nama, $email, $username, $hashedPassword, $level)) {
             header("Location: index.php?error=3");
             exit;
         } else {
@@ -86,18 +87,18 @@ if (isset($_POST["register"])) {
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password" required>
+          <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+              <span class="fas fa-eye-slash eye-icon" style="cursor:pointer;" id="togglePassword" onclick="togglePasswordVisibility('password')"></span>
             </div>
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Retype password" name="password2" required>
+          <input type="password" class="form-control" placeholder="Retype password" name="password2" id="password2" required>
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+              <span class="fas fa-eye-slash eye-icon" style="cursor:pointer;" id="togglePassword2" onclick="togglePasswordVisibility('password2')"></span>
             </div>
           </div>
         </div>
@@ -120,7 +121,21 @@ if (isset($_POST["register"])) {
     </div>
   </div>
 </div>
-
+<script>
+function togglePasswordVisibility(fieldId) {
+  const passwordField = document.getElementById(fieldId);
+  const togglePassword = document.querySelector(`#togglePassword${fieldId === 'password2' ? '2' : ''}`);
+  if (passwordField.type === 'password') {
+    passwordField.type = 'text';
+    togglePassword.classList.remove('fa-eye-slash');
+    togglePassword.classList.add('fa-eye');
+  } else {
+    passwordField.type = 'password';
+    togglePassword.classList.remove('fa-eye');
+    togglePassword.classList.add('fa-eye-slash');
+  }
+}
+</script>
 <!-- jQuery -->
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

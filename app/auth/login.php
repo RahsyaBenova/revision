@@ -42,6 +42,9 @@ if (isset($_POST["login"])) {
     .forgot-password-link a {
       color: cyan;
     }
+    .input-group-text .eye-icon {
+      cursor: pointer;
+    }
   </style>
 
   <!-- Google Font: Source Sans Pro -->
@@ -80,10 +83,10 @@ if (isset($_POST["login"])) {
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password"  >
+          <input type="password" class="form-control" placeholder="Password" name="password" id="password">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+              <span class="fas fa-eye-slash eye-icon" id="togglePassword" onclick="togglePasswordVisibility()"></span>
             </div>
           </div>
         </div>
@@ -98,36 +101,14 @@ if (isset($_POST["login"])) {
         </div>
         
         <center>
-          <div class="text-center" style="color:white; margin right:-2px;">
-            <p color="white">Belum Punya Akun?<a href="index.php?auth=register" style="color:cyan;"> Register</a></p>
-           
-            
+          <div class="text-center" style="color:white; margin-right:-2px;">
+            <p>Belum Punya Akun?<a href="index.php?auth=register" style="color:cyan;"> Register</a></p>
           </center>
       </div>
       </form>
-
-      <!-- <div class="social-auth-links text-center mt-2 mb-3">
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-      </div> -->
-      <!-- /.social-auth-links -->
-
-      <!-- <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
-      </p>
-      <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
-      </p> -->
     </div>
-    <!-- /.card-body -->
   </div>
-  <!-- /.card -->
 </div>
-<!-- /.login-box -->
 
 <!-- jQuery -->
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
@@ -137,7 +118,23 @@ if (isset($_POST["login"])) {
 <script src="../assets/dist/js/adminlte.min.js"></script>
 <!-- SweetAlert2 -->
 <script src="../assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-</body>
+<!-- Toggle Password Visibility -->
+<script>
+function togglePasswordVisibility() {
+  const passwordField = document.getElementById('password');
+  const togglePassword = document.getElementById('togglePassword');
+  if (passwordField.type === 'password') {
+    passwordField.type = 'text';
+    togglePassword.classList.remove('fa-eye-slash');
+    togglePassword.classList.add('fa-eye');
+  } else {
+    passwordField.type = 'password';
+    togglePassword.classList.remove('fa-eye');
+    togglePassword.classList.add('fa-eye-slash');
+  }
+}
+</script>
+
 <?php 
 if (isset ($_GET['error'])){
   $x =( $_GET['error']);
@@ -231,4 +228,5 @@ if (isset ($_GET['error'])){
   }
 }
 ?>
+</body>
 </html>
