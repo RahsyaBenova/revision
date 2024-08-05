@@ -136,7 +136,7 @@ class Auth
                     $_SESSION['level'] = $data['level'];
                     return true;
                 } else {
-                    $this->error = 'Password salah';
+                    $this->error = '1';
                     return false;
                 }
             } else {
