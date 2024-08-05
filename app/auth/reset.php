@@ -6,7 +6,8 @@ $auth = Auth::getInstance($pdo);
 $user = $auth->verifyResetToken($token);
 
 if (!$user) {
-    die($auth->getError());
+    header("Location: index.php?auth=login&&error=6");
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -79,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <input type="password" class="form-control" placeholder="New Password" name="password"  >
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-key"></span>
+              <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>

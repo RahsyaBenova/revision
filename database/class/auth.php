@@ -3,16 +3,12 @@
 class Auth
 {
     private $db;
-
     private $error;
-
     private static $instance = null;
-
 
     public function __construct($db_conn)
     {
         $this->db = $db_conn;
-
         @session_start();
     }
 
@@ -21,52 +17,40 @@ class Auth
         if (self::$instance == null) {
             self::$instance = new Auth($pdo);
         }
-
         return self::$instance;
     }
 
-    
-    // cek apabila user sudah login atau belum
     public function isLoggedIn()
     {
-        //apakah user_session sudah ada di session
-        if (isset($_SESSION["user_session"])) {
-            return true;
-        }
+        return isset($_SESSION["user_session"]);
     }
 
-    // mendapatkan data user yang login saat ini
     public function getUser()
-{
-    if (!$this->isLoggedIn()) {
-        return false;
-    }
-    try {
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
-        $stmt->bindParam(":id", $_SESSION['user_session']);
-        $stmt->execute();
-        $user = $stmt->fetch();
-
-        if ($user) {
-            $_SESSION['nama'] = $user['nama'];
-            $_SESSION['level'] = $user['level'];
+    {
+        if (!$this->isLoggedIn()) {
+            return false;
         }
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
+            $stmt->bindParam(":id", $_SESSION['user_session']);
+            $stmt->execute();
+            $user = $stmt->fetch();
 
-        return $user;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-        return false;
+            if ($user) {
+                $_SESSION['nama'] = $user['nama'];
+                $_SESSION['level'] = $user['level'];
+            }
+
+            return $user;
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
+            return false;
+        }
     }
-}
 
-
-    //logout
     public function logout()
     {
-        //hapus Session
-        unset($_SESSION['user_session']);
-        unset($_SESSION['nama']);
-        unset($_SESSION['level']);
+        unset($_SESSION['user_session'], $_SESSION['nama'], $_SESSION['level']);
         session_destroy();
         return true;
     }
@@ -77,22 +61,15 @@ class Auth
             $stmt = $this->db->prepare("SELECT * FROM users WHERE username = :username");
             $stmt->bindParam(":username", $username);
             $stmt->execute();
-            $stmt->fetch();
-            if ($stmt->rowCount()  > 0) {
-                echo "Yo";
-                return true;
-            } else {
-                echo "Oi";
-                return false;
-            }
+            return $stmt->rowCount() > 0;
         } catch (PDOException $e) {
-            echo $e->getMessage();
+            $this->error = $e->getMessage();
+            return false;
         }
     }
-    // Menambahkan data apabila user belum mempunyai akun
+
     public function register($nama, $email, $username, $password, $level)
     {
-        // Validasi input
         if (empty($nama)) {
             $this->error = "Nama diperlukan";
             return false;
@@ -118,16 +95,13 @@ class Auth
             return false;
         }
 
-        // Cek apakah username atau email sudah digunakan
         if ($this->cekUserExistence($username, $email)) {
             $this->error = "Username atau email sudah digunakan!";
             return false;
         }
 
-        // Enkripsi password
         $hashPasswd = password_hash($password, PASSWORD_DEFAULT);
 
-        // Masukkan user baru ke database
         try {
             $stmt = $this->db->prepare("INSERT INTO users(nama, email, username, password, level) VALUES(:nama, :email, :username, :pass, :level)");
             $stmt->bindParam(":nama", $nama);
@@ -140,15 +114,13 @@ class Auth
         } catch (PDOException $e) {
             if ($e->errorInfo[0] == 23000) {
                 $this->error = "Email atau username sudah digunakan!";
-                return false;
             } else {
                 $this->error = $e->getMessage();
-                return false;
             }
+            return false;
         }
     }
 
-    // Fungsi login 
     public function login($username, $password)
     {
         try {
@@ -164,11 +136,11 @@ class Auth
                     $_SESSION['level'] = $data['level'];
                     return true;
                 } else {
-                    $this->error = '1 ';
+                    $this->error = 'Password salah';
                     return false;
                 }
             } else {
-                $this->error = 'Username tidak ditemukan';
+                $this->error = '7';
                 return false;
             }
         } catch (PDOException $e) {
@@ -177,7 +149,6 @@ class Auth
         }
     }
 
-    // Cek apakah username atau email sudah digunakan
     public function cekUserExistence($username, $email)
     {
         try {
@@ -185,11 +156,7 @@ class Auth
             $stmt->bindParam(":username", $username);
             $stmt->bindParam(":email", $email);
             $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return $stmt->rowCount() > 0;
         } catch (PDOException $e) {
             $this->error = $e->getMessage();
             return false;
@@ -197,47 +164,41 @@ class Auth
     }
 
     public function sendPasswordReset($email)
-{
-    // Generate token and hash it
-    $token = bin2hex(random_bytes(16));
-    $token_hash = hash("sha256", $token);
-    $expiry = date("Y-m-d H:i:s", time() + 60 * 30); // Token expires in 30 minutes
+    {
+        $token = bin2hex(random_bytes(16));
+        $token_hash = hash("sha256", $token);
+        $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
 
-    // Update database with token and expiry
-    try {
-        $stmt = $this->db->prepare("UPDATE users SET reset_token_hash = :token_hash, reset_token_expires_at = :expiry WHERE email = :email");
-        $stmt->bindParam(":token_hash", $token_hash);
-        $stmt->bindParam(":expiry", $expiry);
-        $stmt->bindParam(":email", $email);
-        $stmt->execute();
+        try {
+            $stmt = $this->db->prepare("UPDATE users SET reset_token_hash = :token_hash, reset_token_expires_at = :expiry WHERE email = :email");
+            $stmt->bindParam(":token_hash", $token_hash);
+            $stmt->bindParam(":expiry", $expiry);
+            $stmt->bindParam(":email", $email);
+            $stmt->execute();
 
-        if ($stmt->rowCount()) {
-            // Send email
-            $mail = require __DIR__ . "/mailer.php";
-            $mail->setFrom("*********");
-            $mail->addAddress($email);
-            $mail->Subject = "Password Reset";
-            $mail->Body = <<<END
-                Click <a href="http://localhost/revision/index.php?auth=reset&token=$token">here</a> to reset your password.
-                END;
+            if ($stmt->rowCount()) {
+                $mail = require __DIR__ . "/mailer.php";
+                $mail->setFrom("whoamirange@gmail.com");
+                $mail->addAddress($email);
+                $mail->Subject = "Password Reset";
+                $mail->Body = "Click <a href=\"http://localhost/revision/index.php?auth=reset&token=$token\">here</a> to reset your password.";
 
-            try {
-                $mail->send();
-                return "<script>windows.location.href = 'http://localhost/revision/index.php?auth=login&&error=4'</script>";
-            } catch (Exception $e) {
-                $this->error = "Message could not be sent. Mailer error: {$mail->ErrorInfo}";
+                try {
+                    $mail->send();
+                    return "<script>window.location.href = 'http://localhost/revision/index.php?auth=login&&error=4';</script>";
+                } catch (Exception $e) {
+                    $this->error = "Message could not be sent. Mailer error: {$mail->ErrorInfo}";
+                    return false;
+                }
+            } else {
+                $this->error = "No user found with that email address.";
                 return false;
             }
-        } else {
-            $this->error = "No user found with that email address.";
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
             return false;
         }
-    } catch (PDOException $e) {
-        $this->error = $e->getMessage();
-        return false;
     }
-}
-
 
     public function verifyResetToken($token)
     {
@@ -252,8 +213,8 @@ class Auth
             if ($user && strtotime($user["reset_token_expires_at"]) > time()) {
                 return $user;
             } else {
-                return "<script>windows.location.href = 'http://localhost/revision/index.php?auth=login&&error=6'</script>";
-                return false;
+                header("Location: http://localhost/revision/index.php?auth=login&&error=6");
+                exit;
             }
         } catch (PDOException $e) {
             $this->error = $e->getMessage();
@@ -266,7 +227,7 @@ class Auth
         $hashPasswd = password_hash($password, PASSWORD_DEFAULT);
 
         try {
-            $stmt = $this->db->prepare("UPDATE users SET password = :password, reset_token_hash = NULL, reset_token_expires_at = NULL WHERE id = :user_id ");
+            $stmt = $this->db->prepare("UPDATE users SET password = :password, reset_token_hash = NULL, reset_token_expires_at = NULL WHERE id = :user_id");
             $stmt->bindParam(":password", $hashPasswd);
             $stmt->bindParam(":user_id", $user_id);
             $stmt->execute();
@@ -277,7 +238,6 @@ class Auth
         }
     }
 
-    // Error message function
     public function getError()
     {
         return $this->error;

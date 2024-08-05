@@ -223,6 +223,21 @@ if (isset ($_GET['error'])){
     })
     </script>";
   }
+  else if ($x==7) {
+    echo "
+    <script>
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    Toast.fire({
+      icon: 'error',
+      title: 'Username Tidak Terdaftar. Silahkan Registrasi Terlebih Dahulu.'
+    })
+    </script>";
+  }
   else {
       echo '';
   }
