@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         $foto = $_FILES['foto']['name'];
         $tmp_name = $_FILES['foto']['tmp_name'];
-        $upload_dir = '../../assets/dist/img/foto/';
+        $upload_dir = '../assets/dist/img/foto/';
         move_uploaded_file($tmp_name, $upload_dir . $foto);
     } else {
         // Jika tidak ada file foto baru yang diunggah, gunakan foto lama
