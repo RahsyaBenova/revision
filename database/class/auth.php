@@ -178,7 +178,7 @@ class Auth
 
             if ($stmt->rowCount()) {
                 $mail = require __DIR__ . "/mailer.php";
-                $mail->setFrom("whoamirange@gmail.com");
+                $mail->setFrom("***********");
                 $mail->addAddress($email);
                 $mail->Subject = "Password Reset";
                 $mail->Body = "Click <a href=\"http://localhost/revision/index.php?auth=reset&token=$token\">here</a> to reset your password.";

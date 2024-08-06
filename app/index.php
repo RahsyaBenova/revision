@@ -33,6 +33,8 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
             include 'page/report/pdf-keuangan.php';
         case 'penggajian':
             include 'page/report/cetak_penggajian.php';
+        case 'grafik':
+            include 'page/report/cetak_grafik.php';
     }
 
     include 'layout/header.php'; ?>
