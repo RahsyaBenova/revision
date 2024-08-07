@@ -91,6 +91,8 @@ if (!$user->isLoggedIn() && $user->isLoggedIn() == false) {
                   include ('page/lokasi/default.php');}
               else if($_GET['page']== 'edit-data-jabatan'){ 
                   include ('edit/edit_data_jabatan.php');}
+              else if($_GET['page']== 'profile'){ 
+                  include ('page/profile/default.php');}
               else if($_GET['page']== 'warning'){ 
                   include ('page/warning.php');}
               else{

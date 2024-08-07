@@ -39,6 +39,7 @@ class Auth
             if ($user) {
                 $_SESSION['nama'] = $user['nama'];
                 $_SESSION['level'] = $user['level'];
+                $_SESSION['email'] = $user['email'];
             }
 
             return $user;
@@ -178,7 +179,7 @@ class Auth
 
             if ($stmt->rowCount()) {
                 $mail = require __DIR__ . "/mailer.php";
-                $mail->setFrom("***********");
+                $mail->setFrom("************");
                 $mail->addAddress($email);
                 $mail->Subject = "Password Reset";
                 $mail->Body = "Click <a href=\"http://localhost/revision/index.php?auth=reset&token=$token\">here</a> to reset your password.";
@@ -228,6 +229,36 @@ class Auth
 
         try {
             $stmt = $this->db->prepare("UPDATE users SET password = :password, reset_token_hash = NULL, reset_token_expires_at = NULL WHERE id = :user_id");
+            $stmt->bindParam(":password", $hashPasswd);
+            $stmt->bindParam(":user_id", $user_id);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updateEmail($user_id, $email)
+    {
+        try {
+            $stmt = $this->db->prepare("UPDATE users SET email = :email WHERE id = :user_id");
+            $stmt->bindParam(":email", $email);
+            $stmt->bindParam(":user_id", $user_id);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updateProfilePassword($user_id, $password)
+    {
+        $hashPasswd = password_hash($password, PASSWORD_DEFAULT);
+
+        try {
+            $stmt = $this->db->prepare("UPDATE users SET password = :password WHERE id = :user_id");
             $stmt->bindParam(":password", $hashPasswd);
             $stmt->bindParam(":user_id", $user_id);
             $stmt->execute();
