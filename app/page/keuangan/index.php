@@ -162,7 +162,7 @@ $date = date('Y-m-d');
                             <div class="container-fluid">
                                 <div class="row">
                                     <!-- Left col -->
-                                    <section class="col-lg-6 connectedSortable">
+                                    <section class="col-lg-12 connectedSortable">
                                         <!-- Custom tabs (Charts with tabs)-->
                                         <div class="card">
                                             <div class="card-header">
@@ -185,7 +185,7 @@ $date = date('Y-m-d');
                                             <div class="card-body">
                                                 <div class="tab-content p-0">
                                                     <!-- Chart -->
-                                                    <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
+                                                    <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 600px;">
                                                         <canvas id="myChart" width="400" height="200"></canvas>
                                                     </div>
                                                 </div>

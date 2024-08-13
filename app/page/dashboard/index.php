@@ -56,6 +56,17 @@ $pdo = Koneksi::connect();
 $count = count::getInstance($pdo);
 $view = $count->countData("users");
 $view2 = $count->countData("tb_pegawai");
+$workLocations = $count->countData("tb_lokasi");
+
+// Mendapatkan pendapatan bulan ini
+$currentMonth = date('m');
+$currentYear = date('Y');
+$queryIncomeThisMonth = "SELECT SUM(pemasukan) AS total_income FROM tb_keuangan WHERE MONTH(tanggal) = :currentMonth AND YEAR(tanggal) = :currentYear";
+$stmt = $pdo->prepare($queryIncomeThisMonth);
+$stmt->bindParam(':currentMonth', $currentMonth, PDO::PARAM_INT);
+$stmt->bindParam(':currentYear', $currentYear, PDO::PARAM_INT);
+$stmt->execute();
+$incomeThisMonth = $stmt->fetch(PDO::FETCH_ASSOC)['total_income'];
 ?>
 <section class="content">
   <div class="row">
@@ -87,6 +98,34 @@ $view2 = $count->countData("tb_pegawai");
       </div>
     </div>
     <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3><?= $workLocations ?></h3>
+          <p>Work Locations</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-location"></i>
+        </div>
+        <a href="#" class="small-box-footer">Jumlah Lokasi Kerja</a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>Rp<?= number_format($incomeThisMonth, 0, ',', '.') ?></h3>
+          <p>Pendapatan Bulan Ini</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-cash"></i>
+        </div>
+        <a href="#" class="small-box-footer">Detail Pendapatan</a>
+      </div>
+    </div>
+    <!-- ./col -->
   </div>
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
@@ -95,7 +134,7 @@ $view2 = $count->countData("tb_pegawai");
         <!-- Main row -->
         <div class="row">
             <!-- Left col -->
-            <section class="col-lg-6 connectedSortable">
+            <section class="col-lg-12 connectedSortable">
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card">
                     <div class="card-header">
@@ -118,7 +157,7 @@ $view2 = $count->countData("tb_pegawai");
                     <div class="card-body">
                         <div class="tab-content p-0">
                             <!-- Chart -->
-                            <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
+                            <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 600px;">
                                 <canvas id="myChart" width="400" height="200"></canvas>
                             </div>
                             <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
@@ -130,8 +169,6 @@ $view2 = $count->countData("tb_pegawai");
             </section><!-- /.Left col -->
         </div><!-- /.row (main row) -->
     </div><!-- /.container-fluid -->
-
-   
 
     <script>
         $(document).ready(function(){
@@ -163,7 +200,7 @@ $view2 = $count->countData("tb_pegawai");
                 $('#hidden_div_html').val($('#revenue-chart').html());
                 $('#new_pdf').submit();
             });
-        });
+        }); 
     </script>
 </body>
 </html>
